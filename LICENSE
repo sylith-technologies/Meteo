@@ -1,0 +1,217 @@
+================================================================================
+SYLITH FAIR SOURCE LICENSE (SFSL)
+VERSION 1.0
+RELEASED: JULY 2026
+OFFICIAL URL: https://github.com/sylith-technologies/Sylith-Fair-Source-License
+
+Copyright (c) 2026 Vicente José Leiva Escárate (Sylith Technologies).
+All rights reserved.
+================================================================================
+
+This license is a Source-Available agreement that governs the use, modification,
+and distribution of the software provided by Sylith Technologies.
+
+Copyright (c) 2026 Vicente Leiva Escárate (Sylith Technologies). 
+All rights reserved.
+
+This license is a Source-Available agreement that governs the use, 
+modification, and distribution of the software provided by Sylith Technologies.
+
+1. LICENSE ACCEPTANCE
+Use, download, installation, compilation, modification or redistribution of this
+Software constitutes the User's express and legally binding acceptance of all the
+terms and conditions of this license. If you do not accept these terms, you are
+not authorized to use the Software.
+
+2. DEFINITIONS
+"Software": The source code, object code, binaries, libraries, documentation, 
+manuals, wikis, examples, graphic resources, icons, and any other files
+distributed under this license, unless a different license is explicitly stated
+for specific components.
+
+"Derivative Work": Any work based upon, incorporating, adapting, translating, 
+modifying, extending, or otherwise derived from the Software, to the extent 
+recognized by applicable copyright law.
+
+"Owner": Vicente Leiva Escárate, acting personally and/or under the trade name
+"Sylith Technologies", together with any lawful successor or entity to which 
+ownership of the Software has been assigned.
+
+"User": Any individual or legal entity exercising the rights granted by this 
+license.
+
+"Contributor": Any individual or entity that voluntarily submits a contribution
+of code, design or documentation to the Owner for inclusion in the Software.
+
+"Commercial Use": Any use intended directly or indirectly to generate revenue,
+economic benefit, paid advertising, or commercial exploitation. This includes, 
+without limitation:
+- The sale of services, subscriptions, or access to the Software.
+- The use of the Software as a cloud service (SaaS, PaaS, IaaS).
+- The sale, resale, or co-distribution of the Software packaged on third-party
+hardware.
+- Using the Software or substantial portions thereof as a dataset for training,
+fine-tuning, or validation of commercial Artificial Intelligence (AI) or
+Large Language Models (LLMs).
+
+"Hosting Exception": Hosting, mirroring, or distributing the Software through
+public or private version control platforms (such as GitHub or GitLab) does
+not in itself constitute Commercial Use, unless one or more of the Commercial Use 
+activities defined above apply.
+
+"Official Supporting Legal Documents": Legal documents published by the Owner 
+that supplement this License with additional terms, conditions, restrictions, 
+and clarifications, and shall be binding where expressly incorporated by reference.
+
+3. GRANTING OF PERMISSIONS
+Subject to strict compliance with this license, the Owner grants the User a 
+worldwide, royalty-free, non-exclusive, revocable solely upon material breach 
+of this License, provided that revocation shall occur only upon breach of this License:
+- Use the Software for personal, educational, research, or internal
+evaluation purposes.
+- Study the Software's operation and modify the source code for personal use.
+- Create public forks or private forks.
+- Redistribute exact or modified copies, provided it is done free of charge
+and complies with Section 5.
+
+4. RESTRICTIONS ON COMMERCIAL USE
+Without the express written authorization of Sylith Technologies, all 
+Commercial Use (as defined in Section 2) is prohibited. Any license for 
+commercial exploitation must be negotiated directly with the Owner through a
+separate agreement.
+
+5. MODIFICATION, DISTRIBUTION, AND COMPATIBILITY
+Any redistribution of the Software or its Derivative Software must comply with
+the following terms:
+- Retain this complete license text and maintain the copyright notices.
+- The Derivative Software must be distributed under the same terms of this
+license (SFSL), remain licensed under this License
+- The User may incorporate third-party components only when the terms of their
+respective license are compatible with this license and the obligations
+imposed by the said third-party license.
+
+6. PATENT GRANT
+Subject to the terms of this license, the Owner and any Contributor who holds
+patents grant the User a worldwide, royalty-free, non-exclusive patent license
+to make, use, sell, and transfer the Software.
+However, if the User initiates patent litigation against any entity alleging
+that the Software constitutes patent infringement, any patent license granted
+to such User under this license for that Software will automatically terminate 
+as of the date the litigation is filed.
+
+7. INTELLECTUAL PROPERTY AND DERIVATIVE NAMES
+The Owner retains all intellectual property rights. This license does not grant
+any rights to trade names, trademarks, logos or corporate identity.
+Any fork or Derivative Software must remove or modify any graphic or naming elements that
+could cause confusion or suggest that it constitutes an official version of 
+the Software distributed by Sylith Technologies.
+
+8. CONTRIBUTIONS
+Unless the parties have signed a separate Contributor License Agreement (CLA),
+all contributions voluntarily submitted for inclusion in the Software will be
+governed by the terms of this license. The Contributor retains copyright to
+their contribution, but by submitting it, grants Sylith Technologies an
+irrevocable, worldwide, non-exclusive and royalty-free license to use, modify,
+integrate, and commercially relicense said contribution. This right to relicense
+belongs exclusively to the Owner and does not authorize other Users to
+commercially exploit the contribution.
+
+9. DISCLAIMER OF WARRANTY AND LIMITATION OF LIABILITY
+THE SOFTWARE IS PROVIDED "AS IS," WITHOUT WARRANTY OF ANY KIND. IN NO EVENT
+SHALL SYLITH TECHNOLOGIES, ITS AUTHORS, OR CONTRIBUTORS BE LIABLE FOR ANY 
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING FROM
+THE USE OF, OR INABILITY TO USE, THE SOFTWARE.
+
+10. TERMINATION AND REMEDY
+Failure to comply with any of the conditions will automatically terminate the
+permissions granted. However, if the breach is remediable, the User will have
+thirty (30) days after notification by the Owner to correct the violation
+and regain the license. Termination will not affect the rights previously 
+acquired by third parties who have received the Software under this license.
+
+11. GENERAL PROVISIONS
+- "Jurisdiction": This license shall be governed by and construed in accordance 
+with the laws of the Republic of Chile (La República de Chile) and applicable
+international treaties. Disputes shall be submitted to the courts of Santiago, Chile.
+
+- "Severability": If any provision is held to unenforceable or invalid by a court
+of competent jurisdiction, such provision shall be modified to the minimum 
+extent necessary to render it valid, and the remainder of agreement shall 
+remain in full force and effect.
+
+- "No Waiver": The failure of the Owner to enforce any right or provision
+under this license shall not constitute a waiver of such right or provision
+in the future.
+
+- "Entire Agreement": This license constitutes the entire agreement between the
+parties with respect to the Software and supersedes all prior communications
+and agreements.
+
+- "Survival": The provisions relating to intellectual property, trademarks, 
+patent grants, limitation of liability, disclaimers, jurisdiction, and any other 
+provisions that by their nature are intended to survive termination shall remain 
+in effect after termination of this License.
+
+12. LICENSE VERSIONS
+The Owner reserves the exclusive right to publish, revise, modify, replace or
+withdraw versions of the Sylith Fair Source License (SFSL) of the Sylith 
+Technologies ecosystem.
+Each official distribution of the Software shall be subject exclusively to the
+version of the SFSL that accompanies it at the time of its distribution by the
+Owner. Subsequent versions of the SFSL shall not retroactively modify the rights
+and obligations applicable to prior distributions.
+The Owner may distribute updates, patches, minor releases, major releases, or 
+new editions of the Software under a subsequent version of the SFSL.
+To access, download, install, use, modify, or redistribute such distributions, 
+the User must strictly comply with the version of the SFSL that accompanies them.
+References made in this license to technologies, platforms, business models, or
+methods of economic exploitation are illustrative and not exhaustive. 
+The provisions of this license shall be construed to encompass functionally
+equivalent technologies, services, or models that exist currently or are 
+developed hereafter.
+Unless expressly authorized in writing by the Owner, no User, Contributor, 
+or third party may relicense, replace, or declare a different version of the 
+SFSL applicable to an official copy of the Software.
+
+13. SYLITH OFFICIAL POLICIES
+The Owner may publish and maintain supplementary documents intended to develop,
+clarify, or exemplify the application of this license without modifying its 
+fundamental principles.
+These documents, collectively functioning as the normative framework of the 
+ecosystem (Sylith Official Policies), may include, but are not limited to:
+- Commercial Use Policy
+- Artificial Intelligence & Data Policy
+- Trademark Policy
+- Contributor License Agreement (CLA)
+- Acceptable Use Policy
+- Security & Compliance Policy
+These documents shall supplement the implementation and interpretation and 
+application of the SFSL regarding the Software officially distributed by the Owner.
+
+In the event of a conflict or contradiction between the SFSL and any Official 
+Policy or Supplementary Document, the provisions of the SFSL shall prevail, 
+unless the SFSL explicitly provides otherwise.
+
+14. OFFICIAL TRANSLATIONS
+The Owner may publish official translations of this License in different languages. 
+Any translation officially published by the Owner that is substantially equivalent 
+in legal effect and drafting to the original text shall constitute an official 
+version of this License.
+Official translations may be distributed under filenames including, but not limited to, 
+LICENSE.en.txt, LICENSE.es.txt, and other translations. Only translations officially 
+published by the Owner through the Software's official repository or any other 
+official distribution channel designated by the Owner shall be considered official under this License.
+For ordinary use, Users may rely on any official translation published by the Owner.
+In the event of any judicial proceeding, arbitration, administrative proceeding, 
+legal dispute, or inconsistency between language versions, the original language 
+version designated by the Owner for that release of the License shall be the controlling 
+and authoritative text and shall be interpreted exclusively in its original language. 
+No translated version shall alter the legal meaning, scope, or intent of the original text.
+
+15. FINAL PROVISIONS
+This License constitutes the official legal instrument governing the use, 
+modification, distribution, and licensing of the Software published by the Owner.
+Nothing in this License shall be interpreted as granting any rights except 
+those expressly provided herein. All rights not expressly granted are reserved by the Owner.
+Copyright © 2026 Vicente Leiva Escárate, acting personally and/or under the 
+trade name "Sylith Technologies". All rights reserved.
