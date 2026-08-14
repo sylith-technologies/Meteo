@@ -1,0 +1,31 @@
+{
+  "providers": [
+    {
+      "id": "custom-example",
+      "name": "Example public station",
+      "url": "https://example.org/weather?lat={lat}&lon={lon}",
+      "mapping": {
+        "temperature": "current.temperature",
+        "apparent_temperature": "current.feels_like",
+        "condition": "current.condition",
+        "humidity": "current.humidity",
+        "pressure": "current.pressure_hpa",
+        "wind_speed": "current.wind_kmh",
+        "wind_direction": "current.wind_direction_deg",
+        "precipitation": "current.precipitation_mm",
+        "observed_at": "current.time"
+      },
+      "condition_map": {
+        "sunny": "clear",
+        "partly cloudy": "partly-cloudy",
+        "rain": "rain",
+        "thunderstorm": "thunderstorm"
+      },
+      "temperature_unit": "celsius",
+      "wind_unit": "kmh",
+      "weight": 0.5,
+      "attribution": "Example station",
+      "attribution_url": "https://example.org/"
+    }
+  ]
+}
