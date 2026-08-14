@@ -1,0 +1,256 @@
+# Copyright (C) 2026 Vicente José Leiva Escárate
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+"""Experimental, transparent consensus over normalized provider data."""
+
+from __future__ import annotations
+
+import math
+import statistics
+from collections import defaultdict
+from dataclasses import replace
+from datetime import datetime, timezone
+from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+
+from app.core_bridge import native_core
+from app.models import (
+    CurrentConditions,
+    DailyForecast,
+    HourlyForecast,
+    WeatherBundle,
+)
+
+
+WeightedBundle = Tuple[WeatherBundle, float]
+
+
+class ConsensusEngine:
+    """Combines forecasts without presenting the result as an official warning.
+
+    Provider weights express coverage policy, not a scientific guarantee. Alerts
+    are aggregated verbatim and are never averaged, voted down or rewritten.
+    """
+
+    @staticmethod
+    def _clean_pairs(values: Iterable[Tuple[Optional[float], float]]) -> List[Tuple[float, float]]:
+        return [
+            (float(value), max(0.0, float(weight)))
+            for value, weight in values
+            if value is not None and math.isfinite(float(value)) and weight > 0.0
+        ]
+
+    @classmethod
+    def _robust_weighted_mean(cls, values: Iterable[Tuple[Optional[float], float]]) -> Optional[float]:
+        pairs = cls._clean_pairs(values)
+        if not pairs:
+            return None
+
+        if len(pairs) >= 3:
+            raw_values = [value for value, _ in pairs]
+            median = statistics.median(raw_values)
+            deviations = [abs(value - median) for value in raw_values]
+            mad = statistics.median(deviations)
+            # A zero MAD is common when two nearby models agree exactly. It
+            # provides no scale for deciding that a modest third value is bad.
+            limit = mad * 3.0 if mad > 0.0 else max(10.0, abs(median) * 0.5)
+            filtered = [
+                (value, weight)
+                for value, weight in pairs
+                if abs(value - median) <= limit
+            ]
+            if filtered:
+                pairs = filtered
+
+        result = native_core.weighted_mean(
+            [value for value, _ in pairs],
+            [weight for _, weight in pairs],
+        )
+        return round(result, 2)
+
+    @staticmethod
+    def _weighted_condition(values: Iterable[Tuple[str, float]]) -> str:
+        totals: Dict[str, float] = defaultdict(float)
+        for condition, weight in values:
+            totals[condition or "unknown"] += max(0.0, weight)
+        return max(totals, key=totals.get) if totals else "unknown"
+
+    @staticmethod
+    def _circular_mean(values: Iterable[Tuple[Optional[float], float]]) -> Optional[float]:
+        pairs = ConsensusEngine._clean_pairs(values)
+        if not pairs:
+            return None
+        sin_sum = sum(math.sin(math.radians(value)) * weight for value, weight in pairs)
+        cos_sum = sum(math.cos(math.radians(value)) * weight for value, weight in pairs)
+        if sin_sum == 0.0 and cos_sum == 0.0:
+            return None
+        return round((math.degrees(math.atan2(sin_sum, cos_sum)) + 360.0) % 360.0, 1)
+
+    @staticmethod
+    def _confidence(items: Sequence[WeightedBundle]) -> int:
+        if len(items) < 2:
+            return 40
+        temperatures = [bundle.current.temperature_c for bundle, _ in items]
+        spread = max(temperatures) - min(temperatures)
+        spread_score = max(0.0, 1.0 - spread / 8.0)
+
+        condition_weights: Dict[str, float] = defaultdict(float)
+        total_weight = 0.0
+        for bundle, weight in items:
+            condition_weights[bundle.current.condition_code] += weight
+            total_weight += weight
+        agreement = max(condition_weights.values()) / total_weight if total_weight else 0.0
+        source_score = min(1.0, (len(items) - 1) / 2.0)
+        return round(100.0 * (0.45 * spread_score + 0.35 * agreement + 0.20 * source_score))
+
+    @classmethod
+    def _combine_current(cls, items: Sequence[WeightedBundle]) -> CurrentConditions:
+        latest_bundle = max(items, key=lambda item: item[0].retrieved_at)[0]
+        get = lambda name: cls._robust_weighted_mean(
+            (getattr(bundle.current, name), weight) for bundle, weight in items
+        )
+        return CurrentConditions(
+            observed_at=latest_bundle.current.observed_at,
+            temperature_c=get("temperature_c"),
+            apparent_temperature_c=get("apparent_temperature_c"),
+            condition_code=cls._weighted_condition(
+                (bundle.current.condition_code, weight) for bundle, weight in items
+            ),
+            humidity_percent=get("humidity_percent"),
+            pressure_hpa=get("pressure_hpa"),
+            wind_speed_kmh=get("wind_speed_kmh"),
+            wind_gust_kmh=get("wind_gust_kmh"),
+            wind_direction_deg=cls._circular_mean(
+                (bundle.current.wind_direction_deg, weight) for bundle, weight in items
+            ),
+            precipitation_mm=get("precipitation_mm"),
+            visibility_km=get("visibility_km"),
+            is_forecast=any(bundle.current.is_forecast for bundle, _ in items),
+        )
+
+    @staticmethod
+    def _hour_key(value: str, timezone_name: str) -> str:
+        try:
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                try:
+                    parsed = parsed.replace(tzinfo=ZoneInfo(timezone_name))
+                except ZoneInfoNotFoundError:
+                    parsed = parsed.replace(tzinfo=timezone.utc)
+            return parsed.astimezone(timezone.utc).isoformat(timespec="hours")
+        except (TypeError, ValueError):
+            return value[:13]
+
+    @classmethod
+    def _combine_hourly(cls, items: Sequence[WeightedBundle]) -> List[HourlyForecast]:
+        grouped: Dict[str, List[Tuple[HourlyForecast, float]]] = defaultdict(list)
+        for bundle, weight in items:
+            for hour in bundle.hourly[:48]:
+                grouped[cls._hour_key(hour.time, bundle.timezone)].append((hour, weight))
+
+        combined: List[HourlyForecast] = []
+        for key in sorted(grouped)[:48]:
+            hours = grouped[key]
+            first = hours[0][0]
+            average = lambda name: cls._robust_weighted_mean(
+                (getattr(hour, name), weight) for hour, weight in hours
+            )
+            combined.append(
+                HourlyForecast(
+                    time=first.time,
+                    temperature_c=average("temperature_c"),
+                    condition_code=cls._weighted_condition(
+                        (hour.condition_code, weight) for hour, weight in hours
+                    ),
+                    precipitation_probability=average("precipitation_probability"),
+                    precipitation_mm=average("precipitation_mm"),
+                    wind_speed_kmh=average("wind_speed_kmh"),
+                    wind_gust_kmh=average("wind_gust_kmh"),
+                )
+            )
+        return combined
+
+    @classmethod
+    def _combine_daily(cls, items: Sequence[WeightedBundle]) -> List[DailyForecast]:
+        grouped: Dict[str, List[Tuple[DailyForecast, float]]] = defaultdict(list)
+        for bundle, weight in items:
+            for day in bundle.daily[:15]:
+                grouped[day.date].append((day, weight))
+
+        combined: List[DailyForecast] = []
+        for date in sorted(grouped)[:15]:
+            days = grouped[date]
+            average = lambda name: cls._robust_weighted_mean(
+                (getattr(day, name), weight) for day, weight in days
+            )
+            source_count = len(days)
+            day_confidence = min(95, 40 + max(0, source_count - 1) * 25)
+            combined.append(
+                DailyForecast(
+                    date=date,
+                    temperature_max_c=average("temperature_max_c"),
+                    temperature_min_c=average("temperature_min_c"),
+                    condition_code=cls._weighted_condition(
+                        (day.condition_code, weight) for day, weight in days
+                    ),
+                    precipitation_probability=average("precipitation_probability"),
+                    precipitation_sum_mm=average("precipitation_sum_mm"),
+                    wind_speed_max_kmh=average("wind_speed_max_kmh"),
+                    wind_gust_max_kmh=average("wind_gust_max_kmh"),
+                    uv_index_max=max(
+                        (day.uv_index_max for day, _ in days if day.uv_index_max is not None),
+                        default=None,
+                    ),
+                    sunrise=next((day.sunrise for day, _ in days if day.sunrise), None),
+                    sunset=next((day.sunset for day, _ in days if day.sunset), None),
+                    source_count=source_count,
+                    confidence_percent=day_confidence,
+                )
+            )
+        return combined
+
+    @classmethod
+    def calculate(cls, items: Sequence[WeightedBundle]) -> WeatherBundle:
+        usable = [(bundle, weight) for bundle, weight in items if weight > 0.0]
+        if not usable:
+            raise ValueError("At least one provider result is required")
+        if len(usable) == 1:
+            bundle, _ = usable[0]
+            return replace(
+                bundle,
+                source_ids=[bundle.provider_id],
+                is_consensus=False,
+                confidence_percent=40,
+            )
+
+        first = usable[0][0]
+        alerts = []
+        seen_alerts = set()
+        for bundle, _ in usable:
+            for alert in bundle.alerts:
+                key = (alert.source_name, alert.alert_id)
+                if key not in seen_alerts:
+                    alerts.append(alert)
+                    seen_alerts.add(key)
+
+        air_quality = next((bundle.air_quality for bundle, _ in usable if bundle.air_quality), None)
+        sources = [bundle.provider_id for bundle, _ in usable]
+        return WeatherBundle(
+            provider_id="sylith-consensus",
+            provider_name="Sylith weighted consensus (experimental)",
+            location=first.location,
+            retrieved_at=max(bundle.retrieved_at for bundle, _ in usable),
+            timezone=first.timezone,
+            current=cls._combine_current(usable),
+            hourly=cls._combine_hourly(usable),
+            daily=cls._combine_daily(usable),
+            air_quality=air_quality,
+            alerts=alerts,
+            attribution="Normalized weighted combination: "
+            + " + ".join(bundle.provider_name for bundle, _ in usable),
+            attribution_url="",
+            source_ids=sources,
+            is_consensus=True,
+            confidence_percent=cls._confidence(usable),
+            stale=any(bundle.stale for bundle, _ in usable),
+        )
