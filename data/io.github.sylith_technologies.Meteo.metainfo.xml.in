@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2026 Vicente José Leiva Escárate -->
+<component type="desktop-application">
+  <id>io.github.sylith_technologies.Meteo</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Meteo</name>
+  <summary>Clear, multi-provider weather forecasts for Linux</summary>
+  <developer id="io.github.sylith_technologies">
+    <name>Sylith Technologies</name>
+  </developer>
+  <description>
+    <p>Meteo presents current conditions, a 48-hour outlook and a 15-day forecast in a responsive GNOME interface.</p>
+    <p>Open-Meteo, MET Norway and the U.S. National Weather Service are kept visibly separate. An experimental weighted consensus is available when at least two compatible sources respond.</p>
+    <p>Official warnings retain their original authority and are never averaged with model-derived forecast signals.</p>
+  </description>
+  <launchable type="desktop-id">io.github.sylith_technologies.Meteo.desktop</launchable>
+  <url type="homepage">https://sylith-technologies.github.io/</url>
+  <url type="bugtracker">https://github.com/sylith-technologies/Meteo/issues</url>
+  <url type="vcs-browser">https://github.com/sylith-technologies/Meteo</url>
+  <categories>
+    <category>Utility</category>
+  </categories>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+  <translation type="gettext">meteo</translation>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0-alpha" date="2026-08-13" type="development">
+      <description>
+        <p>First public alpha with privacy-safe local storage, truthful missing-data handling, bounded offline cache, provider isolation, weather and air quality, and an experimental opt-in consensus.</p>
+        <p xml:lang="fr">Première version alpha publique avec stockage local respectueux de la vie privée, gestion fidèle des données manquantes, cache hors ligne limité, isolation des fournisseurs, météo et qualité de l’air, et consensus expérimental facultatif.</p>
+        <p xml:lang="pt">Primeira versão alfa pública com armazenamento local orientado à privacidade, tratamento fiel de dados ausentes, cache offline limitada, isolamento de fornecedores, meteorologia e qualidade do ar e um consenso experimental opcional.</p>
+        <p xml:lang="es">Primera alfa pública con almacenamiento local que respeta la privacidad, tratamiento honesto de datos faltantes, caché sin conexión limitada, aislamiento de proveedores, meteorología y calidad del aire, y un consenso experimental opcional.</p>
+      </description>
+    </release>
+  </releases>
+</component>
