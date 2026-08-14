@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2026 Vicente José Leiva Escárate
+     SPDX-License-Identifier: GPL-3.0-or-later -->
+<schemalist gettext-domain="meteo">
+  <schema id="io.github.sylith_technologies.Meteo" path="/io/github/sylith-technologies/meteo/">
+    <key name="saved-locations" type="s">
+      <default>'[]'</default>
+      <summary>Saved locations as normalized JSON</summary>
+    </key>
+    <key name="active-location-key" type="s">
+      <default>''</default>
+      <summary>Key of the selected saved location</summary>
+    </key>
+    <key name="enabled-providers" type="as">
+      <default>['open-meteo']</default>
+      <summary>Providers included in the experimental consensus</summary>
+    </key>
+    <key name="provider-mode" type="s">
+      <default>'open-meteo'</default>
+      <summary>Displayed provider or consensus mode</summary>
+    </key>
+    <key name="unit-system" type="s">
+      <default>'auto'</default>
+      <summary>Automatic, metric or imperial units</summary>
+    </key>
+    <key name="color-scheme" type="s">
+      <default>'system'</default>
+      <summary>System, light or dark colour scheme</summary>
+    </key>
+    <key name="language" type="s">
+      <default>'system'</default>
+      <summary>Interface language or system default</summary>
+    </key>
+    <key name="update-interval" type="i">
+      <range min="10" max="180"/>
+      <default>30</default>
+      <summary>Refresh interval in minutes</summary>
+    </key>
+    <key name="show-forecast-signals" type="b">
+      <default>true</default>
+      <summary>Show non-official model-derived forecast signals</summary>
+    </key>
+    <key name="seen-alert-ids" type="as">
+      <default>[]</default>
+      <summary>Recently displayed official alert identifiers</summary>
+    </key>
+  </schema>
+</schemalist>
