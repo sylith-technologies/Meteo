@@ -1,0 +1,17 @@
+# Copyright (C) 2026 Vicente José Leiva Escárate
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[Desktop Entry]
+Name=Meteo
+GenericName=Weather
+Comment=Clear weather forecasts from multiple providers
+Exec=meteo
+Icon=io.github.sylith_technologies.Meteo
+Terminal=false
+Type=Application
+Categories=Utility;GTK;
+Keywords=weather;forecast;temperature;rain;alerts;
+StartupNotify=true
+DBusActivatable=false
+X-GNOME-UsesNotifications=true
+X-Purism-FormFactor=Workstation;Mobile;
