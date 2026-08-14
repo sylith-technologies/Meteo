@@ -1,0 +1,18 @@
+# Copyright (C) 2026 Vicente José Leiva Escárate
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[package]
+name = "meteo-core"
+version = "0.1.0-alpha"
+edition = "2021"
+license = "GPL-3.0-or-later"
+publish = false
+
+[lib]
+name = "meteo_core"
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
