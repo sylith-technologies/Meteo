@@ -1,0 +1,7 @@
+#!/bin/sh
+# Copyright (C) 2026 Vicente José Leiva Escárate
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+export PYTHONPATH="@PKGDATADIR@${PYTHONPATH:+:$PYTHONPATH}"
+export GSETTINGS_SCHEMA_DIR="@GSETTINGS_SCHEMA_DIR@"
+exec "@PYTHON@" -m app.main "$@"
