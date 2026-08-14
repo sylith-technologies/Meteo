@@ -1,0 +1,9 @@
+# Copyright (C) 2026 Vicente José Leiva Escárate
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+option(
+  'native_core',
+  type: 'feature',
+  value: 'auto',
+  description: 'Build the optional native Rust validation and consensus primitives',
+)
